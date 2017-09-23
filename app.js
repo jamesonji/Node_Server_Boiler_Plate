@@ -4,19 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 var config = require('./config');
 
-MongoClient.connect(config.mongoConnect, function (err, db) {
-  if (err) throw err
+// connect to mongodb
+mongoose.connect(config.mongoConnect);
+mongoose.Promise = global.Promise;
 
-  db.collection('users').find().toArray(function (err, result) {
-    if (err) throw err
-
-    console.log(result)
-  })
-})
-
+// initialize routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -37,6 +32,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+// only use this error handler middleware in "/users" based routes
+app.use("/users", function(err, req, res, next){
+  console.log(err);
+  // should we handle this one?
+  if (err.name == 'ValidationError'){
+    // Yes, this is a validation error
+    // Error status is 422
+    // Send the err back
+    res.status(422).send({err: err.message});
+  }
+  
+  // If the error gets here
+  // Then we cannot process the error
+  // Let it pass to the next handeler
+  return next(err);
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -45,11 +57,12 @@ app.use(function(req, res, next) {
 });
 
 // error handler
+
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  
   // render the error page
   res.status(err.status || 500);
   res.render('error');

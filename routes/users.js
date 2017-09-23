@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const User = require('../model/users');
 
 // get a list of users
 // get: localhost/users
@@ -16,12 +17,12 @@ router.get('/new', function(req, res, next) {
 // add a new user to db
 // post: locahost/users
 router.post('/', function(req, res, next) {
-  console.log(req.body);
-  res.send({
-    type:'POST',
-    name: req.body.name,
-    rank: req.body.rank
+  // create a new user and send the new user back
+  User.create(req.body)
+  .then(function(user){
+    res.send(user)
   })
+  .catch(next);
 });
 
 // update a user in the db
