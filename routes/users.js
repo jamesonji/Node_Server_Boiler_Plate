@@ -19,10 +19,10 @@ router.get('/new', function(req, res, next) {
 router.post('/', function(req, res, next) {
   // create a new user and send the new user back
   User.create(req.body)
-  .then(function(user){
-    res.send(user)
-  })
-  .catch(next);
+    .then(function(user){
+      res.send(user)
+    })
+    .catch(next);
 });
 
 // update a user in the db
@@ -34,6 +34,12 @@ router.put('/:id', function(req, res, next) {
 // delete a user in the db
 // delete: localhost: users/:id
 router.delete('/:id', function(req, res, next) {
-  res.send({type:'DELETE'});
+  // get :id, use req.params.id
+  User.findByIdAndRemove({ _id: req.params.id})
+    .then(function(user){
+      res.send(user);
+    })
+    .catch(next);
 });
+
 module.exports = router;
