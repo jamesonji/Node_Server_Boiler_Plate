@@ -28,7 +28,18 @@ router.post('/', function(req, res, next) {
 // update a user in the db
 // put: localhost: users/:id
 router.put('/:id', function(req, res, next) {
-  res.send({type: 'PUT'});
+  
+  // Find user by Id then update record by req.body
+  User.findByIdAndUpdate({_id: req.params.id}, req.body)
+    .then(function(){
+      // Update completed
+      // Refind the updated user
+      // Then send it back to frontend
+      User.findOne({_id: req.params.id}).then(function(user){
+        res.send(user);
+      })
+    })
+    .catch(next);
 });
 
 // delete a user in the db
