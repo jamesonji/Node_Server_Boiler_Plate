@@ -16,4 +16,9 @@ router.get('/signup', function(req, res, next) {
   res.render('signup');
 });
 
+router.post('/signup', function(req, res, next){
+  res.send('sinup success');
+})
+
+
 module.exports = router;

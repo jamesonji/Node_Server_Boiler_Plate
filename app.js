@@ -4,20 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var pgp = require('pg-promise')();
 var config = require('./config');
-
-// postgres db connection
-var db = pgp(config.pgConnect);
-
-// sample db connection
-db.one('SELECT $1 AS value', 123)
-  .then(function (data) {
-    console.log('DATA:', data.value)
-  })
-  .catch(function (error) {
-    console.log('ERROR:', error)
-  })
 
 var index = require('./routes/index');
 var users = require('./routes/users');

@@ -3,12 +3,12 @@ extends layout
 block content
   .main.container
     h1 Sign In
-
-    // register form
+    
+    // signin form
     form(method='POST' action='/signin')
-      div
-        label(for='username') Email:
-        input#email.form-control(type='email', placeholder='name@email.com' name='email')
+      div.form-group
+        label(for='username') username:
+        input#email.form-control(type='email', placeholder='username' name='username')
       div.form-group
         label(for='email') Email:
         input#email.form-control(type='email', placeholder='name@email.com' name='email')
