@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');  
 const Schema = mongoose.Schema;
 
+const GeoSchema = new Schema({
+  type:{
+    type: String,
+    default: 'Point'
+  },
+  coordinates:{
+    type: [Number], // expect Array of Numbers
+    index: '2dsphere'
+  }
+});
+
 //create user Schema & model
 const UserSchema = new Schema({
   username:{
@@ -8,10 +19,12 @@ const UserSchema = new Schema({
     required: [true, 'User name is required']
   },
   fname: {
-    type: String
+    type: String,
+    default: ""
   },
   lname: {
-    type: String
+    type: String,
+    default: ""
   },
   dob:{
     type: Date,
@@ -20,9 +33,8 @@ const UserSchema = new Schema({
   available:{
     type: Boolean,
     default: false
-  }
-  
-  // add in geo location
+  },
+  geometry: GeoSchema
 });
 
 const User = mongoose.model('user', UserSchema);

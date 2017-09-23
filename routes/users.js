@@ -2,10 +2,25 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/users');
 
-// get a list of users
-// get: localhost/users
+// get a list of users near location
+// get: localhost:3000/users?lng=-80&lat=25.793
 router.get('/', function(req, res, next) {
-  res.render('users/index');
+  // find nearby users
+  User.geoNear(
+    // Initial params
+    {
+      type:'Point',
+      coordinates:[parseFloat(req.query.lng), parseFloat(req.query.lat)]
+    },
+    // More params options
+    {
+      maxDistance: 100000, spherical: true
+    }
+  )
+    .then(function(users){
+      res.render('users/index', {users: users})
+    })
+    .catch(next)
 });
 
 // get to the create user page
