@@ -34,19 +34,19 @@ app.use('/users', users);
 
 // only use this error handler middleware in "/users" based routes
 app.use("/users", function(err, req, res, next){
-  console.log(err);
+
   // should we handle this one?
   if (err.name == 'ValidationError'){
     // Yes, this is a validation error
     // Error status is 422
     // Send the err back
-    res.status(422).send({err: err.message});
+    return res.status(422).send({err: err.message});
   }
   
   // If the error gets here
   // Then we cannot process the error
   // Let it pass to the next handeler
-  return next(err);
+  next(err);
 });
 
 // catch 404 and forward to error handler
