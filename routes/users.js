@@ -6,18 +6,9 @@ const User = require('../model/users');
 // get: localhost:3000/users?lng=-80&lat=25.793
 router.get('/', function(req, res, next) {
   // find nearby users
-  User.geoNear(
-    // Initial params
-    {
-      type:'Point',
-      coordinates:[parseFloat(req.query.lng), parseFloat(req.query.lat)]
-    },
-    // More params options
-    {
-      maxDistance: 100000, spherical: true
-    }
-  )
+  User.find({})
     .then(function(users){
+      console.log(users);
       res.render('users/index', {users: users})
     })
     .catch(next)
