@@ -9,16 +9,12 @@ const mongoose = require('mongoose'),
 
 //create user Schema & model
 const UserSchema = new Schema({
-  username:{
-    type: String,
-    required: [true, 'User name is required'],
-    index: { unique: true }
-  },
+  username:{ type: String, required: [true, 'User name is required'],index: { unique: true }},
+  email:{ type: String, index:{unique: true},lowercase: true},
   fname: {type: String, default: ""},
   lname: {type: String, default: ""},
   password: {type: String, required: true },
   dob:{type: Date, default: Date.now()},
-  available:{type: Boolean, default: false},
   loginAttempts: { type: Number, required: true, default: 0 },
   lockUntil: { type: Number }
 });

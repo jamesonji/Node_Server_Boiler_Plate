@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../model/users');
+const User = require('../models/users');
 
 // get a list of users near location
 // get: localhost:3000/users?lng=-80&lat=25.793
