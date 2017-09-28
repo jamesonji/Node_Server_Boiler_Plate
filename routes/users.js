@@ -8,7 +8,6 @@ router.get('/', function(req, res, next) {
   // find nearby users
   User.find({})
     .then(function(users){
-      console.log(users);
       res.render('users/index', {users: users})
     })
     .catch(next)
