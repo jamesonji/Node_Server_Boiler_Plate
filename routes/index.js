@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/users');
 const Authentication = require('../controllers/authentication');
+const passport = require('passport');
+const passportService = require('../services/passport');
+
+const requireAuth = passport.authenticate('jwt',{session: false}); // turn off cookie based token
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -40,5 +45,8 @@ router.post('/signin', function(req, res, next){
     .catch(next);
 })
 
+router.get('/test', requireAuth, function(req, res, next){
+  res.send('hi there');
+})
 
 module.exports = router;
