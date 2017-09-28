@@ -10,7 +10,7 @@ const requireSignIn = passport.authenticate('local', {session: false});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Super secret code is ABC123' });
 });
 
 /* GET signin page. */
